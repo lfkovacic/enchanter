@@ -1,9 +1,8 @@
 package com.game.enchanter.entities;
 import static org.lwjgl.opengl.GL11.*;
 
-import com.game.enchanter.entities.interfaces.Movable;
 import com.game.enchanter.entities.interfaces.Renderable;
-import static com.game.enchanter.consts.Consts.*;
+
 
 public class PlayerObject extends GameObject implements Renderable {
 
