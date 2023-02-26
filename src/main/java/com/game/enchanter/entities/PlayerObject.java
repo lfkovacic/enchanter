@@ -1,7 +1,5 @@
 package com.game.enchanter.entities;
-import java.awt.event.KeyEvent;
 import static org.lwjgl.opengl.GL11.*;
-import com.game.enchanter.engine.Controller;
 import com.game.enchanter.engine.interfaces.Movable;
 import com.game.enchanter.entities.interfaces.Renderable;
 

@@ -4,7 +4,6 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
-import com.game.enchanter.engine.Controller;
 import com.game.enchanter.entities.PlayerObject;
 import com.game.enchanter.entities.interfaces.Renderable;
 import com.game.enchanter.graphics.Renderer;
@@ -22,8 +21,9 @@ public class App {
 	//Renderer
 	Renderer<Renderable> renderer = new Renderer<Renderable>(3);
 	
-	//Controller
-	Controller controller = new Controller();
+	//Key bindings
+	
+	KeyBindings keyBindings = new KeyBindings();
 
 	// The window handle
 	private long window;
@@ -45,11 +45,23 @@ public class App {
 
 	private void init() {
 		
-		//Game objects
-		
+		//Game objects		
 		
 		PlayerObject player = new PlayerObject(0, 0);
 		renderer.addRenderable(player, 0);
+		
+		//Setting the bindings
+		
+		KeyInput moveUp = new KeyInput(GLFW.GLFW_KEY_W);
+		KeyInput moveDown = new KeyInput(GLFW.GLFW_KEY_S);
+		KeyInput moveLeft = new KeyInput(GLFW.GLFW_KEY_A);
+		KeyInput moveRight = new KeyInput(GLFW.GLFW_KEY_D);
+		
+		keyBindings.add(moveUp, (Runnable)player::moveUp);
+		keyBindings.add(moveDown, (Runnable)player::moveDown);
+		keyBindings.add(moveLeft, (Runnable)player::moveLeft);
+		keyBindings.add(moveRight, (Runnable)player::moveRight);
+		
 		
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
@@ -73,7 +85,7 @@ public class App {
 	    GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
 	        @Override
 	        public void invoke(long window, int key, int scancode, int action, int mods) {
-	            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+	            /*if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
 	                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
 	            } else if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
 	                player.moveUp();
@@ -83,7 +95,11 @@ public class App {
 	                player.moveLeft();
 	            }  else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
 	                player.moveRight();
-	            } 
+	            } */
+	        	
+	        	for (KeyInput input : keyBindings.getInputs()) {
+	        		if (input.isKeyPressed(key, action)) input.execute(); 
+	        	}
 	        }
 	    };
 
