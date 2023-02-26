@@ -2,7 +2,7 @@ package com.game.enchanter.entities;
 
 public abstract class Obstacle extends GameObject {
 
-	public Obstacle(float _x, float _y, float _width, float _height, boolean _passable) {
+	public Obstacle(int _x, int _y, int _width, int _height, boolean _passable) {
 		super(_x, _y, _width, _height, _passable);
 	}
 

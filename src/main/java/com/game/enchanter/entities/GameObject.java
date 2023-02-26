@@ -1,38 +1,47 @@
 package com.game.enchanter.entities;
+import static com.game.enchanter.consts.Consts.*;
 
 public abstract class GameObject {
-	private float x, y;
-	private float width, height;
+	
+	//X and Y are native coordinates
+	
+	private int cellX, cellY;
+	private int cellWidth, cellHeight;
 	private boolean passable=true;
 	
-	public GameObject(float _x, float _y, float _width, float _height) {
-		setX(_x);
-		setY(_y);
-		setWidth(_width);
-		setHeight(_height);		
+	public GameObject(int _x, int _y, int _width, int _height) {
+		setCellX(_x);
+		setCellY(_y);
+		setCellWidth(_width);
+		setCellHeight(_height);		
 	}
-	public GameObject(float _x, float _y, float _width, float _height, boolean _passable) {
-		setX(_x);
-		setY(_y);
-		setWidth(_width);
-		setHeight(_height);
+	public GameObject(int _x, int _y, int _width, int _height, boolean _passable) {
+		setCellX(_x);
+		setCellY(_y);
+		setCellWidth(_width);
+		setCellHeight(_height);	
 		setPassable(_passable);
 	}
 	
 	
 	//Setters
-	
-	public void setX(float _x) {
-		this.x = _x;
+	public void setX(int _x) {
+		this.cellX = _x / CELL_SIZE;
 	}
-	public void setY(float _y) {
-		this.y = _y;
+	public void setY(int _y) {
+		this.cellY = _y / CELL_SIZE;
+	}	
+	public void setCellX(int _x) {
+		this.cellX = _x;
 	}
-	protected void setWidth(float _width) {
-		this.width = _width;
+	public void setCellY(int _y) {
+		this.cellY = _y;
 	}
-	protected void setHeight(float _height) {
-	    this.height = _height;
+	protected void setCellWidth(int _width) {
+		this.cellWidth = _width;
+	}
+	protected void setCellHeight(int _height) {
+	    this.cellHeight = _height;
 	}
 	protected void setPassable(boolean _passable) {
 		this.passable = _passable;
@@ -40,24 +49,40 @@ public abstract class GameObject {
 	
 	//Getters
 	
-	public float getX() {
-		return this.x;
+	public int getX() {
+		return this.cellX*CELL_SIZE;
 	}
-	public float getY() {
-		return this.y;
+	public int getY() {
+		return this.cellY*CELL_SIZE;
 	}
-	public float getWidth() {
-		return this.width;
+	public int getWidth() {
+		return this.cellWidth*CELL_SIZE;
 	}
-	public float getHeight() {
-		return this.height;
+	public int getHeight() {
+		return this.cellHeight*CELL_SIZE;
 	}
 	public boolean getPassable() {
 		return this.passable;
+	}
+	public int getCellWidth() {
+		return this.cellWidth;
+	}
+	public int getCellHeight() {
+		return this.cellHeight;
+	}	
+	public int getCellX() {
+		return cellX;
+	}
+	public int getCellY() {
+		return cellY;
 	}
 	
 	//Render
 	
 	public abstract void render();
+	
+	
+	
+	
 
 }

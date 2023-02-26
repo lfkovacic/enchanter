@@ -94,6 +94,8 @@ public class Grid {
 	public void populateCollisionArray() {
 		for (GameObject object : objectList) {
 			if (!object.getPassable()) {
+				
+				//X and Y are cell coordinates
 			
 				int x0 = (int) object.getX()/getCellWidth();
 				int y0 = (int) object.getY()/getCellHeight();

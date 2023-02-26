@@ -5,14 +5,12 @@ import com.game.enchanter.entities.interfaces.Movable;
 import com.game.enchanter.entities.interfaces.Renderable;
 import static com.game.enchanter.consts.Consts.*;
 
-public class PlayerObject extends GameObject implements Renderable, Movable {
+public class PlayerObject extends GameObject implements Renderable {
 
     private static final float[] COLOR = { 1.0f, 0.0f, 0.0f }; // red
-    private static final int MOVE_AMOUNT = CELL_SIZE;
 
-    public PlayerObject(float x, float y) {
-    	
-        super(x, y, 32, 64);
+    public PlayerObject(int x, int y) {    	
+        super(x, y, 1, 2);
     }
 
     @Override
@@ -25,25 +23,5 @@ public class PlayerObject extends GameObject implements Renderable, Movable {
         glVertex2f(getX(), getY() + getHeight());
         glEnd();
     }
-
-	@Override
-	public void moveUp() {
-		setY(getY()+MOVE_AMOUNT);		
-	}
-
-	@Override
-	public void moveDown() {
-		setY(getY()-MOVE_AMOUNT);
-	}
-
-	@Override
-	public void moveLeft() {
-		setX(getX()-MOVE_AMOUNT);
-	}
-
-	@Override
-	public void moveRight() {
-		setX(getX()+MOVE_AMOUNT);
-	}
 
 }

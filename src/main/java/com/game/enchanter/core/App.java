@@ -57,7 +57,7 @@ public class App {
 		//Game objects		
 		
 		PlayerObject player = new PlayerObject(0, 0);
-		Wall wall = new Wall (320, 320, 128, 64, false);		
+		Wall wall = new Wall (4, 5, 6, 2, false);		
 		
 		renderer.addRenderable(player, 1);
 		renderer.addRenderable(wall, 0);
@@ -69,10 +69,10 @@ public class App {
 		KeyInput moveLeft = new KeyInput(GLFW.GLFW_KEY_A);
 		KeyInput moveRight = new KeyInput(GLFW.GLFW_KEY_D);
 		
-		keyBindings.add(moveUp, (Runnable)player::moveUp);
+		/*keyBindings.add(moveUp, (Runnable)player::moveUp);
 		keyBindings.add(moveDown, (Runnable)player::moveDown);
 		keyBindings.add(moveLeft, (Runnable)player::moveLeft);
-		keyBindings.add(moveRight, (Runnable)player::moveRight);
+		keyBindings.add(moveRight, (Runnable)player::moveRight);*/
 		
 		
 		// Setup an error callback. The default implementation
@@ -98,9 +98,9 @@ public class App {
 	        @Override
 	        public void invoke(long window, int key, int scancode, int action, int mods) {
 	        	
-	        	for (KeyInput input : keyBindings.getInputs()) {
+	        	/*for (KeyInput input : keyBindings.getInputs()) {
 	        		if (input.isKeyPressed(key, action)) input.execute(); 
-	        	}
+	        	}*/
 	        }
 	    };
 
