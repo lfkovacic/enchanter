@@ -1,12 +1,14 @@
 package com.game.enchanter.entities;
 import static org.lwjgl.opengl.GL11.*;
-import com.game.enchanter.engine.interfaces.Movable;
+
+import com.game.enchanter.entities.interfaces.Movable;
 import com.game.enchanter.entities.interfaces.Renderable;
+import static com.game.enchanter.consts.Consts.*;
 
 public class PlayerObject extends GameObject implements Renderable, Movable {
 
     private static final float[] COLOR = { 1.0f, 0.0f, 0.0f }; // red
-    private static final int MOVE_AMOUNT = 16;
+    private static final int MOVE_AMOUNT = CELL_SIZE;
 
     public PlayerObject(float x, float y) {
     	
@@ -26,7 +28,6 @@ public class PlayerObject extends GameObject implements Renderable, Movable {
 
 	@Override
 	public void moveUp() {
-		System.out.println("Y: "+getY());
 		setY(getY()+MOVE_AMOUNT);		
 	}
 

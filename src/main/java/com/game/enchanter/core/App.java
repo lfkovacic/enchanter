@@ -4,17 +4,22 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
+import com.game.enchanter.engine.Grid;
+import com.game.enchanter.entities.GameObject;
 import com.game.enchanter.entities.PlayerObject;
+import com.game.enchanter.entities.Wall;
 import com.game.enchanter.entities.interfaces.Renderable;
 import com.game.enchanter.graphics.Renderer;
 
 import java.nio.*;
+import java.util.List;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
+import static com.game.enchanter.consts.Consts.*;
 
 public class App {
 	
@@ -24,6 +29,10 @@ public class App {
 	//Key bindings
 	
 	KeyBindings keyBindings = new KeyBindings();
+	
+	//Grid
+	
+	Grid grid = new Grid(SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, CELL_SIZE);
 
 	// The window handle
 	private long window;
@@ -48,7 +57,10 @@ public class App {
 		//Game objects		
 		
 		PlayerObject player = new PlayerObject(0, 0);
-		renderer.addRenderable(player, 0);
+		Wall wall = new Wall (320, 320, 128, 64, false);		
+		
+		renderer.addRenderable(player, 1);
+		renderer.addRenderable(wall, 0);
 		
 		//Setting the bindings
 		
@@ -77,7 +89,7 @@ public class App {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
 		// Create the window
-		window = glfwCreateWindow(900, 900, "Hello World!", NULL, NULL);
+		window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World!", NULL, NULL);
 		if ( window == NULL )
 			throw new RuntimeException("Failed to create the GLFW window");
 
@@ -85,17 +97,6 @@ public class App {
 	    GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
 	        @Override
 	        public void invoke(long window, int key, int scancode, int action, int mods) {
-	            /*if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-	                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-	            } else if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
-	                player.moveUp();
-	            }  else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
-	                player.moveDown();
-	            }  else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
-	                player.moveLeft();
-	            }  else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
-	                player.moveRight();
-	            } */
 	        	
 	        	for (KeyInput input : keyBindings.getInputs()) {
 	        		if (input.isKeyPressed(key, action)) input.execute(); 

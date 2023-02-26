@@ -1,4 +1,4 @@
-package com.game.enchanter.engine.interfaces;
+package com.game.enchanter.entities.interfaces;
 
 public interface Movable {
     void moveUp();
