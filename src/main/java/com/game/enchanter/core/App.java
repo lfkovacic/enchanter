@@ -5,6 +5,7 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import com.game.enchanter.engine.Grid;
+import com.game.enchanter.engine.Mejjiq;
 import com.game.enchanter.entities.GameObject;
 import com.game.enchanter.entities.PlayerObject;
 import com.game.enchanter.entities.Wall;
@@ -23,16 +24,13 @@ import static com.game.enchanter.consts.Consts.*;
 
 public class App {
 	
-	//Renderer
-	Renderer<Renderable> renderer = new Renderer<Renderable>(3);
+	//Engine
+	Mejjiq mejjiq = new Mejjiq();
+	
 	
 	//Key bindings
 	
 	KeyBindings keyBindings = new KeyBindings();
-	
-	//Grid
-	
-	Grid grid = new Grid(SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, CELL_SIZE);
 
 	// The window handle
 	private long window;
@@ -57,10 +55,12 @@ public class App {
 		//Game objects		
 		
 		PlayerObject player = new PlayerObject(0, 0);
-		Wall wall = new Wall (4, 5, 6, 2, false);		
+		Wall wall = new Wall (4, 5, 6, 2, false);
 		
-		renderer.addRenderable(player, 1);
-		renderer.addRenderable(wall, 0);
+		mejjiq.grid.addObject(wall);
+		
+		mejjiq.renderer.addRenderable(player, 1);
+		mejjiq.renderer.addRenderable(wall, 0);
 		
 		//Setting the bindings
 		
@@ -69,10 +69,30 @@ public class App {
 		KeyInput moveLeft = new KeyInput(GLFW.GLFW_KEY_A);
 		KeyInput moveRight = new KeyInput(GLFW.GLFW_KEY_D);
 		
-		/*keyBindings.add(moveUp, (Runnable)player::moveUp);
-		keyBindings.add(moveDown, (Runnable)player::moveDown);
-		keyBindings.add(moveLeft, (Runnable)player::moveLeft);
-		keyBindings.add(moveRight, (Runnable)player::moveRight);*/
+		keyBindings.add(moveUp, () -> {
+			System.out.println("Movin' on up");
+		    if (!mejjiq.checkCollision(player.getCellX(), player.getCellY() + 1)) {
+		        mejjiq.moveBy(player, 0, 1);
+		    }
+		});
+
+		keyBindings.add(moveDown, () -> {
+		    if (!mejjiq.checkCollision(player.getCellX(), player.getCellY() - 1)) {
+		        mejjiq.moveBy(player, 0, -1);
+		    }
+		});
+
+		keyBindings.add(moveLeft, () -> {
+		    if (!mejjiq.checkCollision(player.getCellX() - 1, player.getCellY())) {
+		        mejjiq.moveBy(player, -1, 0);
+		    }
+		});
+
+		keyBindings.add(moveRight, () -> {
+		    if (!mejjiq.checkCollision(player.getCellX() + 1, player.getCellY())) {
+		        mejjiq.moveBy(player, 1, 0);
+		    }
+		});
 		
 		
 		// Setup an error callback. The default implementation
@@ -98,9 +118,9 @@ public class App {
 	        @Override
 	        public void invoke(long window, int key, int scancode, int action, int mods) {
 	        	
-	        	/*for (KeyInput input : keyBindings.getInputs()) {
+	        	for (KeyInput input : keyBindings.getInputs()) {
 	        		if (input.isKeyPressed(key, action)) input.execute(); 
-	        	}*/
+	        	}
 	        }
 	    };
 
@@ -155,7 +175,7 @@ public class App {
 		while ( !glfwWindowShouldClose(window) ) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-			renderer.render();
+			mejjiq.render();
 			glfwSwapBuffers(window); // swap the color buffers
 			
 

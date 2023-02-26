@@ -1,5 +1,6 @@
 package com.game.enchanter.engine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.game.enchanter.entities.GameObject;
@@ -24,10 +25,17 @@ public class Grid {
 		collisionArray = new boolean[getCellsX()][getCellsY()];
 		resetCollisionArray();
 		
+		objectList = new ArrayList<GameObject>();
+		
 				
 	}
 	
-	protected void setObjects(List<GameObject> _objectList) {
+	public void addObject(GameObject obj) {
+		this.objectList.add(obj);
+		populateCollisionArray();
+	}
+	
+	public void setObjects(List<GameObject> _objectList) {
 		this.objectList = _objectList;
 	}
 	
@@ -97,11 +105,11 @@ public class Grid {
 				
 				//X and Y are cell coordinates
 			
-				int x0 = (int) object.getX()/getCellWidth();
-				int y0 = (int) object.getY()/getCellHeight();
+				int x0 = (int) object.getCellX();
+				int y0 = (int) object.getCellY();
 				
-				int deltaX = (int) object.getWidth()/getCellWidth();
-				int deltaY = (int) object.getHeight()/getCellHeight();
+				int deltaX = (int) object.getCellWidth();
+				int deltaY = (int) object.getCellHeight();
 			
 				for (int i = x0; i<x0+deltaX; i++) {
 					for (int j = y0; j<y0+deltaY; j++) {
@@ -114,7 +122,7 @@ public class Grid {
 	}
 	
 	public boolean checkCollision(int x, int y) {
-		return collisionArray[x/getCellWidth()][y/getCellHeight()];
+		return collisionArray[x][y];
 	}
 
 }
