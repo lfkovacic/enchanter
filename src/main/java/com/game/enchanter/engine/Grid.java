@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.game.enchanter.entities.GameObject;
+import com.game.enchanter.entities.Obstacle;
 
 public class Grid {
-	List<GameObject> objectList;
+	List<Obstacle> obstacleList;
 	public boolean collisionArray[][];
 	private int gridWidth, gridHeight;
 	private int cellWidth, cellHeight;
@@ -25,22 +26,24 @@ public class Grid {
 		collisionArray = new boolean[getCellsX()][getCellsY()];
 		resetCollisionArray();
 		
-		objectList = new ArrayList<GameObject>();
+		obstacleList = new ArrayList<Obstacle>();
 		
 				
 	}
 	
-	public void addObject(GameObject obj) {
-		this.objectList.add(obj);
+	public void addObstacle(Obstacle obj) {
+		this.obstacleList.add(obj);
 		populateCollisionArray();
 	}
 	
-	public void setObjects(List<GameObject> _objectList) {
-		this.objectList = _objectList;
+	public void setObstacles(List<Obstacle> obstacleList) {
+		for (Obstacle obstacle : obstacleList) {
+			addObstacle(obstacle);
+		}
 	}
 	
-	public List<GameObject> getObjects(){
-		return this.objectList;
+	public List<Obstacle> getObjects(){
+		return this.obstacleList;
 	}
 
 	public int getGridWidth() {
@@ -100,7 +103,7 @@ public class Grid {
 	}
 	
 	public void populateCollisionArray() {
-		for (GameObject object : objectList) {
+		for (GameObject object : obstacleList) {
 			if (!object.getPassable()) {
 				
 				//X and Y are cell coordinates
@@ -122,7 +125,15 @@ public class Grid {
 	}
 	
 	public boolean checkCollision(int x, int y) {
-		return collisionArray[x][y];
+		System.out.println("X: "+x);
+		System.out.println("Y: "+y);
+		System.out.println("CellsX: "+ getCellsX());
+		System.out.println("CellsY: "+ getCellsY());
+		boolean statement = (x>=0&&x<getCellsX()&&y>=0&&y<getCellsY());
+		System.out.println("Statement: " + statement);
+		if (statement) {
+			return collisionArray[x][y];
+		} else return true;
 	}
 
 }

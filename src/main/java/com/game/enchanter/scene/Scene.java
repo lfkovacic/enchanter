@@ -35,5 +35,6 @@ public class Scene {
 		return this.sceneStators;
 	}
 	
+	//TODO getting a specific object
 
 }

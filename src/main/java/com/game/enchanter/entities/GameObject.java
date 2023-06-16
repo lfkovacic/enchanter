@@ -3,7 +3,7 @@ import static com.game.enchanter.consts.Consts.*;
 
 public abstract class GameObject {
 	
-	//X and Y are native coordinates
+	private int id;
 	
 	private int cellX, cellY;
 	private int cellWidth, cellHeight;

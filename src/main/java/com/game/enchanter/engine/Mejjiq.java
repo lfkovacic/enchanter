@@ -5,6 +5,7 @@ import com.game.enchanter.entities.PlayerObject;
 import com.game.enchanter.entities.Wall;
 import com.game.enchanter.entities.interfaces.Renderable;
 import com.game.enchanter.graphics.Renderer;
+import com.game.enchanter.scene.Scene;
 
 import static com.game.enchanter.consts.Consts.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -13,6 +14,7 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.IntBuffer;
+import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -20,9 +22,6 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
-
-import com.game.enchanter.core.KeyBindings;
-import com.game.enchanter.core.KeyInput;
 
 public class Mejjiq {
 	
@@ -43,22 +42,29 @@ public class Mejjiq {
 	
 	public void init() {
 		
-		//Game objects		
+		System.out.println("GLFF PRESS: " + GLFW_PRESS);
+		System.out.println("GLFF REPEAT: " + GLFW_REPEAT);
+		System.out.println("GLFF RELEASE: " + GLFW_RELEASE);
 		
+		//Scenes	
 		PlayerObject player = new PlayerObject(0, 0);
-		Wall wall = new Wall (4, 5, 6, 10, false);
+		Wall wall = new Wall (4, 5, 10, 6, false);
 		
-		this.grid.addObject(wall);
+		Scene startScene = new Scene();
+		startScene.addObject(player);		
+		startScene.addObstacle(wall);
+		
+		this.grid.setObstacles(startScene.getSceneStators());
 		
 		this.renderer.addRenderable(player, 1);
 		this.renderer.addRenderable(wall, 0);
 		
 		//Setting the bindings
 		
-		KeyInput moveUp = new KeyInput(GLFW.GLFW_KEY_W);
-		KeyInput moveDown = new KeyInput(GLFW.GLFW_KEY_S);
-		KeyInput moveLeft = new KeyInput(GLFW.GLFW_KEY_A);
-		KeyInput moveRight = new KeyInput(GLFW.GLFW_KEY_D);
+		KeyInput moveUp = new KeyInput(GLFW.GLFW_KEY_W, GLFW.GLFW_REPEAT);
+		KeyInput moveDown = new KeyInput(GLFW.GLFW_KEY_S, GLFW.GLFW_REPEAT);
+		KeyInput moveLeft = new KeyInput(GLFW.GLFW_KEY_A, GLFW.GLFW_REPEAT);
+		KeyInput moveRight = new KeyInput(GLFW.GLFW_KEY_D, GLFW.GLFW_REPEAT);
 		
 		keyBindings.add(moveUp, () -> {
 		    if (!checkCollision(player.getCellX(), player.getCellY() + 1)) {
@@ -141,7 +147,7 @@ public class Mejjiq {
 		GL.createCapabilities();
 		glMatrixMode(GL_PROJECTION);
 	    glLoadIdentity();
-	    glOrtho(0, 900, 0, 900, -1, 1);
+	    glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1);
 		// Enable v-sync
 		glfwSwapInterval(1);
 
