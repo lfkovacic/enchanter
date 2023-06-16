@@ -14,6 +14,7 @@ import com.enchanter.game.engine.input.KeyBindings;
 import com.enchanter.game.engine.input.KeyInput;
 import com.enchanter.game.engine.scene.Grid;
 import com.enchanter.game.engine.scene.Scene;
+import com.enchanter.game.engine.scene.SceneManager;
 import com.enchanter.game.consts.Consts;
 import com.enchanter.game.engine.core.WindowManager;
 
@@ -22,6 +23,7 @@ public class Mejjiq {
 	public Grid grid;
 	public Renderer<Renderable> renderer;
 	private WindowManager windowManager;
+	private SceneManager sceneManager;
 
 	// Key bindings
 
@@ -39,48 +41,43 @@ public class Mejjiq {
 		System.out.println("GLFF REPEAT: " + GLFW_REPEAT);
 		System.out.println("GLFF RELEASE: " + GLFW_RELEASE);
 
-		// Scenes
-		PlayerObject player = new PlayerObject(0, 0);
-		Wall wall = new Wall(4, 5, 10, 6, false);
-
-		Scene startScene = new Scene();
-		startScene.addObject(player);
-		startScene.addObstacle(wall);
+		// Scene Manager
+		sceneManager = new SceneManager();
+		Scene startScene = SceneManager.getScene(0);
 
 		this.grid.setObstacles(startScene.getSceneStators());
 
-		this.renderer.addRenderable(player, 1);
-		this.renderer.addRenderable(wall, 0);
+		this.renderer.addRenderables(startScene.getRenderables(), 1);
 
 		// Setting the bindings
-		KeyInput moveUp = new KeyInput(GLFW.GLFW_KEY_W, GLFW.GLFW_REPEAT);
-		KeyInput moveDown = new KeyInput(GLFW.GLFW_KEY_S, GLFW.GLFW_REPEAT);
-		KeyInput moveLeft = new KeyInput(GLFW.GLFW_KEY_A, GLFW.GLFW_REPEAT);
-		KeyInput moveRight = new KeyInput(GLFW.GLFW_KEY_D, GLFW.GLFW_REPEAT);
+		// KeyInput moveUp = new KeyInput(GLFW.GLFW_KEY_W, GLFW.GLFW_REPEAT);
+		// KeyInput moveDown = new KeyInput(GLFW.GLFW_KEY_S, GLFW.GLFW_REPEAT);
+		// KeyInput moveLeft = new KeyInput(GLFW.GLFW_KEY_A, GLFW.GLFW_REPEAT);
+		// KeyInput moveRight = new KeyInput(GLFW.GLFW_KEY_D, GLFW.GLFW_REPEAT);
 
-		keyBindings.add(moveUp, () -> {
-			if (!checkCollision(player.getCellX(), player.getCellY() + 1)) {
-				moveBy(player, 0, 1);
-			}
-		});
+		// keyBindings.add(moveUp, () -> {
+		// 	if (!checkCollision(player.getCellX(), player.getCellY() + 1)) {
+		// 		moveBy(player, 0, 1);
+		// 	}
+		// });
 
-		keyBindings.add(moveDown, () -> {
-			if (!checkCollision(player.getCellX(), player.getCellY() - 1)) {
-				moveBy(player, 0, -1);
-			}
-		});
+		// keyBindings.add(moveDown, () -> {
+		// 	if (!checkCollision(player.getCellX(), player.getCellY() - 1)) {
+		// 		moveBy(player, 0, -1);
+		// 	}
+		// });
 
-		keyBindings.add(moveLeft, () -> {
-			if (!checkCollision(player.getCellX() - 1, player.getCellY())) {
-				moveBy(player, -1, 0);
-			}
-		});
+		// keyBindings.add(moveLeft, () -> {
+		// 	if (!checkCollision(player.getCellX() - 1, player.getCellY())) {
+		// 		moveBy(player, -1, 0);
+		// 	}
+		// });
 
-		keyBindings.add(moveRight, () -> {
-			if (!checkCollision(player.getCellX() + 1, player.getCellY())) {
-				moveBy(player, 1, 0);
-			}
-		});
+		// keyBindings.add(moveRight, () -> {
+		// 	if (!checkCollision(player.getCellX() + 1, player.getCellY())) {
+		// 		moveBy(player, 1, 0);
+		// 	}
+		// });
 		windowManager.createWindow(Consts.SCREEN_WIDTH, Consts.SCREEN_HEIGHT);
 		windowManager.setKeyBindings(keyBindings);
 	}

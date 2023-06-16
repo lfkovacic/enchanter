@@ -20,6 +20,10 @@ public class Renderer<T extends Renderable> {
     public void addRenderable(T renderable, int layerIndex) {
         renderLayers.get(layerIndex).addRenderable(renderable);
     }
+    public void addRenderables(List<T> renderables, int layerIndex){
+        renderLayers.get(layerIndex).set(renderables);;
+
+    }
     
     public void addLayer(Layer<T> layer, int layerIndex) {
         this.renderLayers.set(layerIndex, layer);

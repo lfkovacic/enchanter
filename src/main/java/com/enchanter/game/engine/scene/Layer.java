@@ -9,7 +9,11 @@ public class Layer<T> {
 
     public Layer() {
         renderables = new ArrayList<>();
-    }       
+    }
+
+    public void set(List<T> rendereables) {
+        this.renderables = rendereables;
+    }
 
     public void removeRenderable(T renderable) {
         renderables.remove(renderable);
@@ -23,5 +27,3 @@ public class Layer<T> {
         renderables.add(renderable);
     }
 }
-
-
