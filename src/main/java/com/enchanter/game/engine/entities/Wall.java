@@ -11,8 +11,8 @@ public class Wall extends Obstacle implements Renderable {
 	
 	private static final float[] COLOR = { 0.0f, 0.0f, 1.0f }; // blue
 
-	public Wall(int _x, int _y, int _width, int _height, boolean _passable) {
-		super(_x, _y, _width, _height, _passable);
+	public Wall(int id, int _x, int _y, int _width, int _height, boolean _passable) {
+		super(id, _x, _y, _width, _height, _passable);
 	}
 
 	@Override

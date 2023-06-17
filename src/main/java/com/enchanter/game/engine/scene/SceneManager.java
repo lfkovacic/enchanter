@@ -36,7 +36,7 @@ public class SceneManager {
         return scenes;
     }
 
-    public static Scene getScene(int index) {
+    public Scene getScene(int index) {
         if (index >= 0 && index < scenes.size()) {
             return scenes.get(index);
         } else {
@@ -79,8 +79,8 @@ public class SceneManager {
 
     public void createScenesHardcoded() {
         Scene startScene = new Scene(SceneID.START_SCENE.getID());
-        PlayerObject player = new PlayerObject(0, 0);
-		Wall wall = new Wall(4, 5, 10, 6, false);
+        PlayerObject player = new PlayerObject(0, 0, 0);
+		Wall wall = new Wall(0, 4, 5, 10, 6, false);
 		startScene.addObject(player);
 		startScene.addObstacle(wall);
 

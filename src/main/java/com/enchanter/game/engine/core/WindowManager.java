@@ -6,6 +6,8 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -14,17 +16,16 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import com.enchanter.game.engine.entities.interfaces.Renderable;
+import com.enchanter.game.engine.events.input.KeyBinding;
 import com.enchanter.game.engine.graphics.Renderer;
-import com.enchanter.game.engine.input.KeyBindings;
-import com.enchanter.game.engine.input.KeyInput;
 
 public class WindowManager {
     
     private long window;
-    private KeyBindings keyBindings;
+    private List<KeyBinding> keyBindings;
 
     public WindowManager() {
-        keyBindings = new KeyBindings();
+        keyBindings = new ArrayList<>();
     }
 
     public void createWindow(int width, int height) {
@@ -44,7 +45,7 @@ public class WindowManager {
         GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
-                for (KeyInput input : keyBindings.getInputs()) {
+                for (KeyBinding input : keyBindings) {
                     if (input.isKeyPressed(key, action))
                         input.execute();
                 }
@@ -94,7 +95,7 @@ public class WindowManager {
     }
 }
 
-    public void setKeyBindings(KeyBindings keyBindings) {
+    public void setKeyBindings(List<KeyBinding> keyBindings) {
         this.keyBindings = keyBindings;
     }
 

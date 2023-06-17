@@ -57,6 +57,13 @@ public class Scene {
 		return renderables;
 	}
 
-	// TODO getting a specific object
+	public GameObject getObjectById(int objectId) {
+		for (GameObject obj : sceneObjects) {
+			if (obj.getId() == objectId) {
+				return obj;
+			}
+		}
+		return null; // Object with specified ID not found
+	}
 
 }

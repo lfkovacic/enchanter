@@ -8,8 +8,8 @@ public class PlayerObject extends GameObject implements Renderable {
 
     private static final float[] COLOR = { 1.0f, 0.0f, 0.0f }; // red
 
-    public PlayerObject(int x, int y) {    	
-        super(x, y, 1, 2);
+    public PlayerObject(int id, int x, int y) {    	
+        super(id, x, y, 1, 2);
     }
 
     @Override

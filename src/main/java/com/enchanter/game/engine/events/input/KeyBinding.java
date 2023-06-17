@@ -1,16 +1,17 @@
-package com.enchanter.game.engine.input;
+package com.enchanter.game.engine.events.input;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class KeyInput implements IKeyBinding {
+public class KeyBinding implements IKeyBinding {
 
     private Runnable execute;
     private int keyCode;
     private int keyAction;
     
-    public KeyInput(int keyCode, int KeyAction) {
+    public KeyBinding(int keyCode, int keyAction, Runnable execute) {
         setKeyCode(keyCode);
         setKeyAction(keyAction);
+        setExecute(execute);
     }
     
     //Setters 

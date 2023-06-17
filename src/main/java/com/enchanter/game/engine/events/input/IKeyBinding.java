@@ -1,4 +1,4 @@
-package com.enchanter.game.engine.input;
+package com.enchanter.game.engine.events.input;
 
 public interface IKeyBinding {
 	    
