@@ -66,4 +66,13 @@ public class Scene {
 		return null; // Object with specified ID not found
 	}
 
+	public Obstacle getStatorById(int statorId) {
+		for (Obstacle obj : sceneStators){
+			if (obj.getId() == statorId) {
+				return obj;
+			}
+		}
+		return null;
+	}
+
 }

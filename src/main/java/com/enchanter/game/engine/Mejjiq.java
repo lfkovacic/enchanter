@@ -47,7 +47,8 @@ public class Mejjiq {
 
 		this.grid.setObstacles(startScene.getSceneStators());
 
-		this.renderer.addRenderables(startScene.getRenderables(), 1);
+		this.renderer.addRenderable((Renderable) startScene.getObjectById(0), 1);
+		this.renderer.addRenderable((Renderable) startScene.getStatorById(1), 0);
 
 		windowManager.createWindow(Consts.SCREEN_WIDTH, Consts.SCREEN_HEIGHT);
 		windowManager.setKeyBindings(eventManager.getBindings());
