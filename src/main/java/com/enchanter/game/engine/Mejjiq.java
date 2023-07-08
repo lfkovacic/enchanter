@@ -9,6 +9,7 @@ import com.enchanter.game.engine.events.EventManager;
 import com.enchanter.game.engine.graphics.Renderer;
 import com.enchanter.game.engine.interfaces.CollisionCallback;
 import com.enchanter.game.engine.interfaces.MovementCallback;
+import com.enchanter.game.engine.resources.ResourceManager;
 import com.enchanter.game.engine.scene.Grid;
 import com.enchanter.game.engine.scene.Scene;
 import com.enchanter.game.engine.scene.SceneID;
@@ -23,14 +24,17 @@ public class Mejjiq {
 	private WindowManager windowManager;
 	private SceneManager sceneManager;
 	private EventManager eventManager;
+	private ResourceManager resourceManager;
 
 	public Mejjiq() {
 		grid = new Grid(SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, CELL_SIZE);
 		renderer = new Renderer<Renderable>(3);
 		windowManager = new WindowManager();
+		resourceManager = new ResourceManager();
 	}
 
 	public void init() {
+		loadGameResources();
 
 		System.out.println("GLFF PRESS: " + GLFW_PRESS);
 		System.out.println("GLFF REPEAT: " + GLFW_REPEAT);
@@ -72,6 +76,13 @@ public class Mejjiq {
 		else
 			return grid.checkCollision(x, y);
 	};
+	private void loadGameResources() {
+        // Allocate resources based on project needs
+        resourceManager.addResource("Memory", 2048); // Allocate 2048 MB of memory
+        resourceManager.addResource("Textures", 100); // Allocate 100 textures
+        resourceManager.addResource("AudioFiles", 50); // Allocate 50 audio files
+        resourceManager.addResource("Shaders", 10); // Allocate 10 shaders
+    }
 
 	public long getWindow() {
 		return windowManager.getWindow();
