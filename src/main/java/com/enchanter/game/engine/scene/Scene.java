@@ -3,6 +3,8 @@ package com.enchanter.game.engine.scene;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import com.enchanter.game.engine.entities.GameObject;
 import com.enchanter.game.engine.entities.Obstacle;
 import com.enchanter.game.engine.entities.interfaces.Renderable;
@@ -16,6 +18,20 @@ public class Scene {
 		this.id = id;
 		sceneObjects = new ArrayList<>();
 		sceneStators = new ArrayList<>();
+	}
+
+	public Scene(JSONObject jo) {
+		this.id = Integer.valueOf(jo.getString("id"));
+		sceneObjects = new ArrayList<>();
+		sceneStators = new ArrayList<>();
+
+		for (Object sceneObjectJson : jo.getJSONArray("sceneObjects")) {
+			addObject((GameObject) sceneObjectJson);
+		}
+
+		for (Object sceneStatorJson : jo.getJSONArray("sceneStators")) {
+			addObstacle((Obstacle) sceneStatorJson);
+		}
 	}
 
 	public int getId() {
@@ -67,7 +83,7 @@ public class Scene {
 	}
 
 	public Obstacle getStatorById(int statorId) {
-		for (Obstacle obj : sceneStators){
+		for (Obstacle obj : sceneStators) {
 			if (obj.getId() == statorId) {
 				return obj;
 			}

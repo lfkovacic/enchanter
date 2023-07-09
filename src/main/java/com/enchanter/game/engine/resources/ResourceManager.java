@@ -2,12 +2,27 @@ package com.enchanter.game.engine.resources;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
+import com.enchanter.game.engine.entities.GameObject;
+import com.enchanter.game.engine.scene.Scene;
+
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.json.JSONObject;
 
 public class ResourceManager {
     private Map<String, Integer> resourceInventory;
-     private static Dimension screenResolution;
+    private static Dimension screenResolution;
 
     public static Dimension getScreenResolution() {
         if (screenResolution == null) {
@@ -76,5 +91,39 @@ public class ResourceManager {
             int quantity = entry.getValue();
             System.out.println(resourceName + ": " + quantity);
         }
+    }
+
+    public static BufferedImage loadTexture(String filename) throws IOException {
+        BufferedImage image = ImageIO.read(new File(filename));
+        return image;
+    }
+
+    public static Clip loadSound(String filename) throws Exception {
+        Clip clip = AudioSystem.getClip();
+        clip.open(AudioSystem.getAudioInputStream(new File(filename)));
+        return clip;
+    }
+
+    public static Scene loadScene(String filename) throws IOException {
+        JSONObject jo = loadJson(filename);
+        Scene scene = new Scene(jo);
+        return scene;
+    }
+
+    public static GameObject loadGameObject(String filename) {
+        return null;
+        // TODO: Load game object from json file
+    }
+
+    public static JSONObject loadJson(String filename) throws IOException {
+        FileInputStream fis = new FileInputStream(new File(filename));
+        byte[] buffer = new byte[fis.available()];
+        fis.read(buffer);
+        fis.close();
+
+        String jsonContent = new String(buffer);
+        JSONObject jo = new JSONObject(jsonContent);
+
+        return jo;
     }
 }

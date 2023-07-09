@@ -2,6 +2,8 @@ package com.enchanter.game.engine.entities;
 
 import static com.enchanter.game.consts.Consts.*;
 
+import org.json.JSONObject;
+
 public abstract class GameObject {
 
 	private int id;
@@ -25,6 +27,14 @@ public abstract class GameObject {
 		setCellWidth(_width);
 		setCellHeight(_height);
 		setPassable(_passable);
+	}
+
+	public GameObject(JSONObject jo){
+		setId((int)jo.get("id"));
+		setCellX((int)jo.get("x"));
+		setCellY( (int)jo.get("y"));
+		setCellWidth( (int)jo.get("width"));
+		setCellHeight((int)jo.get("height"));
 	}
 
 	// Setters
