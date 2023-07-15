@@ -79,7 +79,7 @@ public class SceneManager {
 
     public void createScenesHardcoded() {
         Scene startScene = new Scene(SceneID.START_SCENE.getID());
-        PlayerObject player = new PlayerObject(0, 0, 0);
+        PlayerObject player = new PlayerObject(0, 0, 0, "src/main/resources/img/sprites/Witch_1.png");
 		Wall wall = new Wall(1, 4, 5, 10, 6, false);
 		startScene.addObject(player);
 		startScene.addObstacle(wall);
