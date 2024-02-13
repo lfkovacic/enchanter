@@ -3,6 +3,8 @@ package com.enchanter.game.engine;
 import static com.enchanter.game.consts.Consts.*;
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.io.IOException;
+
 import com.enchanter.game.engine.entities.GameObject;
 import com.enchanter.game.engine.entities.interfaces.Renderable;
 import com.enchanter.game.engine.events.EventManager;
@@ -27,10 +29,15 @@ public class Mejjiq {
 	private ResourceManager resourceManager;
 
 	public Mejjiq() {
-		grid = new Grid(SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, CELL_SIZE);
-		renderer = new Renderer<Renderable>(3);
-		windowManager = new WindowManager();
-		resourceManager = new ResourceManager();
+		try {
+			grid = new Grid(SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, CELL_SIZE);
+			renderer = new Renderer<Renderable>(3);
+			windowManager = new WindowManager();
+			resourceManager = new ResourceManager();
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+
 	}
 
 	public void init() {
@@ -76,13 +83,14 @@ public class Mejjiq {
 		else
 			return grid.checkCollision(x, y);
 	};
+
 	private void loadGameResources() {
-        // Allocate resources based on project needs
-        resourceManager.addResource("Memory", 2048); // Allocate 2048 MB of memory
-        resourceManager.addResource("Textures", 100); // Allocate 100 textures
-        resourceManager.addResource("AudioFiles", 50); // Allocate 50 audio files
-        resourceManager.addResource("Shaders", 10); // Allocate 10 shaders
-    }
+		// Allocate resources based on project needs
+		resourceManager.addResource("Memory", 2048); // Allocate 2048 MB of memory
+		resourceManager.addResource("Textures", 100); // Allocate 100 textures
+		resourceManager.addResource("AudioFiles", 50); // Allocate 50 audio files
+		resourceManager.addResource("Shaders", 10); // Allocate 10 shaders
+	}
 
 	public long getWindow() {
 		return windowManager.getWindow();

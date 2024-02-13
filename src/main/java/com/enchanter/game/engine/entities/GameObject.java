@@ -128,79 +128,139 @@ public abstract class GameObject {
 		return cellY;
 	}
 
-	protected BufferedImage getSprite(){
+	protected BufferedImage getSprite() {
 		return this.sprite;
 	}
 
 	// Render
 
+	/**
+	 * Renders the GameObject. This method needs to be implemented by subclasses.
+	 */
 	public abstract void render();
 
-	
-
-    protected void renderSprite(int scale) {
+	/**
+	 * Renders the sprite with a given scale.
+	 *
+	 * @param scale The scale factor to apply to the sprite.
+	 */
+	protected void renderSprite(int scale) {
 		if (sprite != null) {
 			int scaledWidth = sprite.getWidth() * scale;
 			int scaledHeight = sprite.getHeight() * scale;
-	
+
+			// Create a buffer to hold the pixel data of the sprite
 			ByteBuffer buffer = createTextureBuffer(sprite);
+
+			// Create a texture ID and bind the texture
 			int textureID = createTextureID(buffer, sprite.getWidth(), sprite.getHeight());
+
+			// Render the textured quad with the scaled dimensions
 			renderTexturedQuad(textureID, scaledWidth, scaledHeight);
+
+			// Cleanup the texture resources
 			cleanupTexture(textureID);
 		}
 	}
 
-    private ByteBuffer createTextureBuffer(BufferedImage image) {
-        int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
-        ByteBuffer buffer = BufferUtils.createByteBuffer(image.getWidth() * image.getHeight() * 4);
+	/**
+	 * Creates a ByteBuffer containing the pixel data of the image.
+	 *
+	 * @param image The image to extract pixel data from.
+	 * @return The ByteBuffer containing the pixel data.
+	 */
+	private ByteBuffer createTextureBuffer(BufferedImage image) {
+		// Get the pixel data from the image
+		int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
 
-        for (int y = image.getHeight() - 1; y >= 0; y--) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int pixel = pixels[y * image.getWidth() + x];
-                buffer.put((byte) ((pixel >> 16) & 0xFF)); // Red component
-                buffer.put((byte) ((pixel >> 8) & 0xFF));  // Green component
-                buffer.put((byte) (pixel & 0xFF));         // Blue component
-                buffer.put((byte) ((pixel >> 24) & 0xFF)); // Alpha component
-            }
-        }
+		// Create a ByteBuffer to hold the pixel data
+		ByteBuffer buffer = BufferUtils.createByteBuffer(image.getWidth() * image.getHeight() * 4);
 
-        buffer.flip();
-        return buffer;
-    }
+		// Iterate over the pixels and extract the color components
+		for (int y = image.getHeight() - 1; y >= 0; y--) {
+			for (int x = 0; x < image.getWidth(); x++) {
+				int pixel = pixels[y * image.getWidth() + x];
+				buffer.put((byte) ((pixel >> 16) & 0xFF)); // Red component
+				buffer.put((byte) ((pixel >> 8) & 0xFF)); // Green component
+				buffer.put((byte) (pixel & 0xFF)); // Blue component
+				buffer.put((byte) ((pixel >> 24) & 0xFF)); // Alpha component
+			}
+		}
 
-    private int createTextureID(ByteBuffer buffer, int width, int height) {
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		buffer.flip();
+		return buffer;
+	}
 
-        glEnable(GL_TEXTURE_2D);
-        int textureID = glGenTextures();
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+	/**
+	 * Creates a texture ID, loads the pixel data into the texture, and sets texture
+	 * parameters.
+	 *
+	 * @param buffer The ByteBuffer containing the pixel data.
+	 * @param width  The width of the texture.
+	 * @param height The height of the texture.
+	 * @return The generated texture ID.
+	 */
+	private int createTextureID(ByteBuffer buffer, int width, int height) {
+		// Enable blending for transparency
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		// Enable 2D texturing
+		glEnable(GL_TEXTURE_2D);
 
-        return textureID;
-    }
+		// Generate a texture ID and bind the texture
+		int textureID = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, textureID);
 
-    private void renderTexturedQuad(int textureID, int width, int height) {
-        glBegin(GL_QUADS);
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f); // Reset color to white before rendering the textured quad
-        glTexCoord2f(0, 0);
-        glVertex2f(getX(), getY());
-        glTexCoord2f(1, 0);
-        glVertex2f(getX() + width, getY());
-        glTexCoord2f(1, 1);
-        glVertex2f(getX() + width, getY() + height);
-        glTexCoord2f(0, 1);
-        glVertex2f(getX(), getY() + height);
-        glEnd();
-    }
+		// Load the pixel data into the texture
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
-    private void cleanupTexture(int textureID) {
-        glDisable(GL_TEXTURE_2D);
-        glDisable(GL_BLEND);
-        glDeleteTextures(textureID);
-    }
+		// Set texture parameters for scaling and filtering
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
+		return textureID;
+	}
+
+	/**
+	 * Renders a textured quad with the given texture ID and dimensions.
+	 *
+	 * @param textureID The ID of the texture to be rendered.
+	 * @param width     The width of the quad.
+	 * @param height    The height of the quad.
+	 */
+	private void renderTexturedQuad(int textureID, int width, int height) {
+		// Begin rendering the quad
+		glBegin(GL_QUADS);
+
+		// Reset color to white before rendering the textured quad
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+		// Specify the texture coordinates and vertices of the quad
+		glTexCoord2f(0, 0);
+		glVertex2f(getX(), getY());
+		glTexCoord2f(1, 0);
+		glVertex2f(getX() + width, getY());
+		glTexCoord2f(1, 1);
+		glVertex2f(getX() + width, getY() + height);
+		glTexCoord2f(0, 1);
+		glVertex2f(getX(), getY() + height);
+
+		// End rendering the quad
+		glEnd();
+	}
+
+	/**
+	 * Cleans up the texture resources.
+	 *
+	 * @param textureID The ID of the texture to be cleaned up.
+	 */
+	private void cleanupTexture(int textureID) {
+		// Disable 2D texturing and blending
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
+
+		// Delete the texture
+		glDeleteTextures(textureID);
+	}
 }
