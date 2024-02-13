@@ -10,7 +10,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class App {
 	
 	//Engine
-	Mejjiq mejjiq = new Mejjiq();
+	Mejjiq mejjiq = Mejjiq.getInstance();
 
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");

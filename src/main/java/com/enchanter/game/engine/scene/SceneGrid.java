@@ -6,24 +6,15 @@ import java.util.List;
 import java.io.IOException;
 
 import com.enchanter.game.engine.entities.GameObject;
+import com.enchanter.game.engine.entities.Grid;
 import com.enchanter.game.engine.entities.Obstacle;
 
-public class Grid {
+public class SceneGrid extends Grid{
 	List<Obstacle> obstacleList;
 	public boolean collisionArray[][];
-	private int gridWidth, gridHeight;
-	private int cellWidth, cellHeight;
-	private int cellsX, cellsY;
 
-	public Grid(int _gridWidth, int _gridHeight, int _cellWidth, int _cellHeight) throws IOException {
-
-		setGridWidth(_gridWidth);
-		setGridHeight(_gridHeight);
-		setCellWidth(_cellWidth);
-		setCellHeight(_cellHeight);
-
-		setCellsX(_gridWidth / _cellWidth);
-		setCellsY(_gridHeight / _cellHeight);
+	public SceneGrid(int _gridWidth, int _gridHeight, int _cellWidth, int _cellHeight) throws IOException {
+		super(_gridWidth, _gridHeight, _cellWidth, _cellHeight);
 
 		collisionArray = new boolean[getCellsX()][getCellsY()];
 		resetCollisionArray();
@@ -43,56 +34,8 @@ public class Grid {
 		}
 	}
 
-	public List<Obstacle> getObjects() {
+	public List<Obstacle> getObstacles() {
 		return this.obstacleList;
-	}
-
-	public int getGridWidth() {
-		return gridWidth;
-	}
-
-	public void setGridWidth(int gridWidth) {
-		this.gridWidth = gridWidth;
-	}
-
-	public int getGridHeight() {
-		return gridHeight;
-	}
-
-	public void setGridHeight(int gridHeight) {
-		this.gridHeight = gridHeight;
-	}
-
-	public int getCellWidth() {
-		return cellWidth;
-	}
-
-	public void setCellWidth(int cellWidth) {
-		this.cellWidth = cellWidth;
-	}
-
-	public int getCellHeight() {
-		return cellHeight;
-	}
-
-	public void setCellHeight(int cellHeight) {
-		this.cellHeight = cellHeight;
-	}
-
-	public int getCellsX() {
-		return cellsX;
-	}
-
-	public void setCellsX(int cellsX) {
-		this.cellsX = cellsX;
-	}
-
-	public int getCellsY() {
-		return cellsY;
-	}
-
-	public void setCellsY(int cellsY) {
-		this.cellsY = cellsY;
 	}
 
 	public void resetCollisionArray() {
