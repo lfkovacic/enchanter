@@ -78,25 +78,31 @@ public class Mejjiq {
 	 */
 	public void init() {
 		loadGameResources();
-
+	
 		System.out.println("GLFF PRESS: " + GLFW_PRESS);
 		System.out.println("GLFF REPEAT: " + GLFW_REPEAT);
 		System.out.println("GLFF RELEASE: " + GLFW_RELEASE);
-
+	
 		sceneManager = new SceneManager();
-		Scene startScene = sceneManager.getScene(SceneID.START_SCENE.getID());
-
-		eventManager = new EventManager();
-		eventManager.setScene(startScene);
-		eventManager.loadHardcodedBindings(collisionCallback, movementCallback);
-
-		grid.setObstacles(startScene.getSceneStators());
-
-		renderer.addRenderable((Renderable) startScene.getObjectById(0), 1);
-		renderer.addRenderable((Renderable) startScene.getStatorById(1), 0);
-
-		windowManager.createWindow(Consts.SCREEN_WIDTH, Consts.SCREEN_HEIGHT);
-		windowManager.setKeyBindings(eventManager.getBindings());
+	
+		// Load scene from file using ResourceManager
+		try {
+			Scene startScene = ResourceManager.loadScene("src\\main\\resources\\scenes\\startScene.json");
+			sceneManager.addScene(startScene);
+			eventManager = new EventManager();
+			eventManager.setScene(startScene);
+			eventManager.loadHardcodedBindings(collisionCallback, movementCallback);
+	
+			grid.setObstacles(startScene.getSceneStators());
+	
+			renderer.addRenderable((Renderable) startScene.getObjectById(0), 1);
+			renderer.addRenderable((Renderable) startScene.getStatorById(1), 0);
+	
+			windowManager.createWindow(Consts.SCREEN_WIDTH, Consts.SCREEN_HEIGHT);
+			windowManager.setKeyBindings(eventManager.getBindings());
+		} catch (IOException e) {
+			System.out.println("Error loading scene from file: " + e.getMessage());
+		}
 	}
 
 	/**

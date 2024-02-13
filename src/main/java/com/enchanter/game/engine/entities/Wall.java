@@ -5,6 +5,8 @@ import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
+import org.json.JSONObject;
+
 import com.enchanter.game.engine.entities.interfaces.Renderable;
 
 public class Wall extends Obstacle implements Renderable {
@@ -13,6 +15,9 @@ public class Wall extends Obstacle implements Renderable {
 
 	public Wall(int id, int _x, int _y, int _width, int _height, boolean _passable) {
 		super(id, _x, _y, _width, _height, _passable);
+	}
+	public Wall(JSONObject jo){
+		super(jo);
 	}
 
 	@Override

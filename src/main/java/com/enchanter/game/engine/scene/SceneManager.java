@@ -13,7 +13,6 @@ public class SceneManager {
 
     public SceneManager() {
         scenes = new LinkedList<>();
-        createScenesHardcoded();
     }
 
     public void addScene(Scene scene) {

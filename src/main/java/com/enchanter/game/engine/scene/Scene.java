@@ -3,10 +3,13 @@ package com.enchanter.game.engine.scene;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.enchanter.game.engine.entities.GameObject;
 import com.enchanter.game.engine.entities.Obstacle;
+import com.enchanter.game.engine.entities.PlayerObject;
+import com.enchanter.game.engine.entities.Wall;
 import com.enchanter.game.engine.entities.interfaces.Renderable;
 
 public class Scene {
@@ -21,16 +24,31 @@ public class Scene {
 	}
 
 	public Scene(JSONObject jo) {
-		this.id = Integer.valueOf(jo.getString("id"));
-		sceneObjects = new ArrayList<>();
-		sceneStators = new ArrayList<>();
+		this.id = jo.getInt("id");
 
-		for (Object sceneObjectJson : jo.getJSONArray("sceneObjects")) {
-			addObject((GameObject) sceneObjectJson);
+		this.sceneObjects = new ArrayList<>();
+		this.sceneStators = new ArrayList<>();
+
+		JSONArray sceneObjectsJson = jo.getJSONArray("sceneObjects");
+		for (int i = 0; i < sceneObjectsJson.length(); i++) {
+			Object sceneObject = sceneObjectsJson.get(i);
+			JSONObject sceneObjectJson = (JSONObject) sceneObject;
+			System.out.println(sceneObjectJson.toString());
+			System.out.println(sceneObjectJson.getString("type"));
+
+			if (sceneObjectJson.getString("type").equals("player")) {
+				System.out.println("Making new player");
+				addObject(new PlayerObject(sceneObjectJson));
+			}
 		}
 
-		for (Object sceneStatorJson : jo.getJSONArray("sceneStators")) {
-			addObstacle((Obstacle) sceneStatorJson);
+		JSONArray sceneStatorsJson = jo.getJSONArray("sceneStators");
+		for (int i = 0; i < sceneStatorsJson.length(); i++) {
+			Object sceneStator = sceneStatorsJson.get(i);
+			JSONObject sceneStatorJson = (JSONObject) sceneStator;
+			if (sceneStatorJson.getString("type").equals("wall")) {
+				addObstacle(new Wall(sceneStatorJson));
+			}
 		}
 	}
 
