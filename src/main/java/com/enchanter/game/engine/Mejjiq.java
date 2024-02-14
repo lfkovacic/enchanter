@@ -1,6 +1,5 @@
 package com.enchanter.game.engine;
 
-import static com.enchanter.game.consts.Consts.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 import java.io.IOException;
@@ -14,10 +13,12 @@ import com.enchanter.game.engine.interfaces.MovementCallback;
 import com.enchanter.game.engine.resources.ResourceManager;
 import com.enchanter.game.engine.scene.SceneGrid;
 import com.enchanter.game.engine.scene.Scene;
-import com.enchanter.game.engine.scene.SceneID;
 import com.enchanter.game.engine.scene.SceneManager;
 import com.enchanter.game.consts.Consts;
 import com.enchanter.game.engine.core.WindowManager;
+
+import static org.lwjgl.glfw.Callbacks.*;
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * /**
@@ -78,10 +79,7 @@ public class Mejjiq {
 	 */
 	public void init() {
 		loadGameResources();
-	
-		System.out.println("GLFF PRESS: " + GLFW_PRESS);
-		System.out.println("GLFF REPEAT: " + GLFW_REPEAT);
-		System.out.println("GLFF RELEASE: " + GLFW_RELEASE);
+
 	
 		sceneManager = new SceneManager();
 	
@@ -95,8 +93,9 @@ public class Mejjiq {
 	
 			grid.setObstacles(startScene.getSceneStators());
 	
-			renderer.addRenderable((Renderable) startScene.getObjectById(0), 1);
-			renderer.addRenderable((Renderable) startScene.getStatorById(1), 0);
+			renderer.addRenderable((Renderable) startScene.getObjectById(0), 2);
+			renderer.addRenderable((Renderable) startScene.getStatorById(1), 1);
+			renderer.addRenderable((Renderable) startScene.getBackgroundById(2), 0);
 	
 			windowManager.createWindow(Consts.SCREEN_WIDTH, Consts.SCREEN_HEIGHT);
 			windowManager.setKeyBindings(eventManager.getBindings());
@@ -109,8 +108,22 @@ public class Mejjiq {
 	 * Runs the game loop, which continuously renders game objects and handles user
 	 * input.
 	 */
-	public void loop() {
-		windowManager.loop(renderer);
+	public void update() {
+		//windowManager.loop(renderer);
+	}
+
+	public void render() {
+		windowManager.render(renderer);
+	}
+
+	public void terminate() {
+		// Free the window callbacks and destroy the window
+		glfwFreeCallbacks(windowManager.getWindow());
+		glfwDestroyWindow(windowManager.getWindow());
+
+		// Terminate GLFW and free the error callback
+		glfwTerminate();
+		glfwSetErrorCallback(null).free();
 	}
 
 	/**
@@ -151,7 +164,7 @@ public class Mejjiq {
 		resourceManager.addResource("AudioFiles", 50);
 	}
 
-	public long getWindow() {
+	public long getWindow(){
 		return windowManager.getWindow();
 	}
 

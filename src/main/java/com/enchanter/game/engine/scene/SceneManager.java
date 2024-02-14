@@ -1,9 +1,7 @@
 package com.enchanter.game.engine.scene;
 
 import com.enchanter.game.engine.entities.GameObject;
-import com.enchanter.game.engine.entities.Obstacle;
-import com.enchanter.game.engine.entities.PlayerObject;
-import com.enchanter.game.engine.entities.Wall;
+import com.enchanter.game.engine.entities.Stator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -60,8 +58,8 @@ public class SceneManager {
         for (GameObject gameObject : gameObjects) {
             scene.addObject(gameObject);
 
-            if (gameObject instanceof Obstacle) {
-                scene.addObstacle((Obstacle) gameObject);
+            if (gameObject instanceof Stator) {
+                scene.addObstacle((Stator) gameObject);
             }
         }
     }
@@ -70,24 +68,9 @@ public class SceneManager {
         for (GameObject gameObject : gameObjects) {
             scene.addObject(gameObject);
 
-            if (gameObject instanceof Obstacle) {
-                scene.addObstacle((Obstacle) gameObject);
+            if (gameObject instanceof Stator) {
+                scene.addObstacle((Stator) gameObject);
             }
         }
-    }
-
-    public void createScenesHardcoded() {
-        Scene startScene = new Scene(SceneID.START_SCENE.getID());
-        PlayerObject player = new PlayerObject(0, 0, 0, "src/main/resources/img/sprites/Witch_1.png");
-		Wall wall = new Wall(1, 4, 5, 10, 6, false);
-		startScene.addObject(player);
-		startScene.addObstacle(wall);
-
-        addScene(startScene);
-
-        // Create and add scenes manually
-       
-
-        // Add more scenes as needed
     }
 }

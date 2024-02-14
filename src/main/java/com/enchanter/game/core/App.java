@@ -16,7 +16,7 @@ public class App {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
 		mejjiq.init();
-		mejjiq.loop();
+		mejjiq.render();
 
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(mejjiq.getWindow());

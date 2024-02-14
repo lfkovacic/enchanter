@@ -38,7 +38,7 @@ public class WindowManager {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-        window = glfwCreateWindow(width, height, "Hello World!", NULL, NULL);
+        window = glfwCreateWindow(width, height, "Enchanter", NULL, NULL);
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
@@ -80,7 +80,7 @@ public class WindowManager {
         glfwShowWindow(window);
     }
 
-    public void loop(Renderer<Renderable> renderer) {
+    public void render(Renderer<Renderable> renderer) {
     GL.createCapabilities();
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 

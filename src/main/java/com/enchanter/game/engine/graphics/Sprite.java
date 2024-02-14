@@ -2,7 +2,6 @@ package com.enchanter.game.engine.graphics;
 
 import com.enchanter.game.engine.entities.interfaces.Renderable;
 import com.enchanter.game.engine.resources.ResourceManager;
-import static com.enchanter.game.consts.Consts.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.image.BufferedImage;

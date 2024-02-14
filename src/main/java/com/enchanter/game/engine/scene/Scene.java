@@ -6,8 +6,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.enchanter.game.engine.entities.BackgroundTile;
 import com.enchanter.game.engine.entities.GameObject;
-import com.enchanter.game.engine.entities.Obstacle;
+import com.enchanter.game.engine.entities.Stator;
 import com.enchanter.game.engine.entities.PlayerObject;
 import com.enchanter.game.engine.entities.Wall;
 import com.enchanter.game.engine.entities.interfaces.Renderable;
@@ -15,7 +16,8 @@ import com.enchanter.game.engine.entities.interfaces.Renderable;
 public class Scene {
 	private final int id;
 	private List<GameObject> sceneObjects;
-	private List<Obstacle> sceneStators;
+	private List<Stator> sceneStators;
+	private List<BackgroundTile> sceneBackground;
 
 	public Scene(int id) {
 		this.id = id;
@@ -28,27 +30,29 @@ public class Scene {
 
 		this.sceneObjects = new ArrayList<>();
 		this.sceneStators = new ArrayList<>();
+		this.sceneBackground = new ArrayList<>();
 
 		JSONArray sceneObjectsJson = jo.getJSONArray("sceneObjects");
-		for (int i = 0; i < sceneObjectsJson.length(); i++) {
-			Object sceneObject = sceneObjectsJson.get(i);
+		for (Object sceneObject : sceneObjectsJson) {
 			JSONObject sceneObjectJson = (JSONObject) sceneObject;
-			System.out.println(sceneObjectJson.toString());
-			System.out.println(sceneObjectJson.getString("type"));
 
 			if (sceneObjectJson.getString("type").equals("player")) {
-				System.out.println("Making new player");
 				addObject(new PlayerObject(sceneObjectJson));
 			}
 		}
 
 		JSONArray sceneStatorsJson = jo.getJSONArray("sceneStators");
-		for (int i = 0; i < sceneStatorsJson.length(); i++) {
-			Object sceneStator = sceneStatorsJson.get(i);
+		for (Object sceneStator : sceneStatorsJson) {
 			JSONObject sceneStatorJson = (JSONObject) sceneStator;
 			if (sceneStatorJson.getString("type").equals("wall")) {
 				addObstacle(new Wall(sceneStatorJson));
 			}
+		}
+
+		JSONArray sceneBackgroundTilesJson = jo.getJSONArray("sceneBackground");
+		for (Object sceneBackgroundTile : sceneBackgroundTilesJson) {
+			JSONObject sceneBackgroundTileJson = (JSONObject) sceneBackgroundTile;
+			addBackgroundTile(new BackgroundTile(sceneBackgroundTileJson));
 		}
 	}
 
@@ -62,8 +66,12 @@ public class Scene {
 		this.sceneObjects.add(obj);
 	}
 
-	public void addObstacle(Obstacle obj) {
+	public void addObstacle(Stator obj) {
 		this.sceneStators.add(obj);
+	}
+
+	public void addBackgroundTile(BackgroundTile obj) {
+		this.sceneBackground.add(obj);
 	}
 
 	// Getting the lists of objects
@@ -72,8 +80,12 @@ public class Scene {
 		return this.sceneObjects;
 	}
 
-	public List<Obstacle> getSceneStators() {
+	public List<Stator> getSceneStators() {
 		return this.sceneStators;
+	}
+
+	public List<BackgroundTile> getSceneBackground() {
+		return this.sceneBackground;
 	}
 
 	public List<Renderable> getRenderables() {
@@ -83,9 +95,14 @@ public class Scene {
 				renderables.add((Renderable) obj);
 			}
 		}
-		for (Obstacle obstacle : sceneStators) {
+		for (Stator obstacle : sceneStators) {
 			if (obstacle instanceof Renderable) {
 				renderables.add((Renderable) obstacle);
+			}
+		}
+		for (BackgroundTile backgroundTile : sceneBackground) {
+			if (backgroundTile instanceof Renderable) {
+				renderables.add((Renderable) backgroundTile);
 			}
 		}
 		return renderables;
@@ -100,9 +117,18 @@ public class Scene {
 		return null; // Object with specified ID not found
 	}
 
-	public Obstacle getStatorById(int statorId) {
-		for (Obstacle obj : sceneStators) {
+	public Stator getStatorById(int statorId) {
+		for (Stator obj : sceneStators) {
 			if (obj.getId() == statorId) {
+				return obj;
+			}
+		}
+		return null;
+	}
+
+	public BackgroundTile getBackgroundById(int bgId) {
+		for (BackgroundTile obj : sceneBackground) {
+			if (obj.getId() == bgId) {
 				return obj;
 			}
 		}

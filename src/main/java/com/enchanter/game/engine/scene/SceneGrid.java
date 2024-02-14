@@ -7,10 +7,10 @@ import java.io.IOException;
 
 import com.enchanter.game.engine.entities.GameObject;
 import com.enchanter.game.engine.entities.Grid;
-import com.enchanter.game.engine.entities.Obstacle;
+import com.enchanter.game.engine.entities.Stator;
 
 public class SceneGrid extends Grid{
-	List<Obstacle> obstacleList;
+	List<Stator> obstacleList;
 	public boolean collisionArray[][];
 
 	public SceneGrid(int _gridWidth, int _gridHeight, int _cellWidth, int _cellHeight) throws IOException {
@@ -19,22 +19,22 @@ public class SceneGrid extends Grid{
 		collisionArray = new boolean[getCellsX()][getCellsY()];
 		resetCollisionArray();
 
-		obstacleList = new ArrayList<Obstacle>();
+		obstacleList = new ArrayList<Stator>();
 
 	}
 
-	public void addObstacle(Obstacle obj) {
+	public void addObstacle(Stator obj) {
 		this.obstacleList.add(obj);
 		populateCollisionArray();
 	}
 
-	public void setObstacles(List<Obstacle> obstacleList) {
-		for (Obstacle obstacle : obstacleList) {
+	public void setObstacles(List<Stator> obstacleList) {
+		for (Stator obstacle : obstacleList) {
 			addObstacle(obstacle);
 		}
 	}
 
-	public List<Obstacle> getObstacles() {
+	public List<Stator> getObstacles() {
 		return this.obstacleList;
 	}
 
@@ -68,12 +68,7 @@ public class SceneGrid extends Grid{
 	}
 
 	public boolean checkCollision(int x, int y) {
-		System.out.println("X: " + x);
-		System.out.println("Y: " + y);
-		System.out.println("CellsX: " + getCellsX());
-		System.out.println("CellsY: " + getCellsY());
 		boolean statement = (x >= 0 && x < getCellsX() && y >= 0 && y < getCellsY());
-		System.out.println("Statement: " + statement);
 		if (statement) {
 			return collisionArray[x][y];
 		} else

@@ -1,27 +1,38 @@
 {
   "id": 1,
   "sceneObjects": [
-      {
-          "id": 0,
-          "x": 0,
-          "y": 0,
-          "width": 1,
-          "height": 2,
-          "spritePath": "src\\main\\resources\\img\\sprites\\Basic sprite.png",
-          "type": "player",
-          "name": "Player"
-      }
+    {
+      "id": 0,
+      "x": 0,
+      "y": 0,
+      "width": 1,
+      "height": 2,
+      "spritePath": "src\\main\\resources\\img\\sprites\\Merchant.png",
+      "type": "player",
+      "name": "Player"
+    }
   ],
   "sceneStators": [
-      {
-          "id": 1,
-          "x": 4,
-          "y": 5,
-          "width": 10,
-          "height": 6,
-          "passable": false,
-          "type": "wall",
-          "name": "Obstacle1"
-      }
+    {
+      "id": 1,
+      "x": 4,
+      "y": 5,
+      "width": 10,
+      "height": 6,
+      "passable": false,
+      "type": "wall",
+      "name": "Obstacle1"
+    }
+  ],
+  "sceneBackground": [
+    {
+      "id": 2,
+      "x": 0,
+      "y": 0,
+      "width": 1,
+      "height": 1,
+      "spritePath": "src\\main\\resources\\img\\sprites\\grass1.png",
+      "name": "GrassTile1"
+    }
   ]
 }
