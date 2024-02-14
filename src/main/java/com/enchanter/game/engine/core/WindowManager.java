@@ -20,15 +20,21 @@ import com.enchanter.game.engine.events.input.KeyBinding;
 import com.enchanter.game.engine.graphics.Renderer;
 
 public class WindowManager {
-    
+
     private long window;
     private List<KeyBinding> keyBindings;
+    private int SCREEN_HEIGHT, SCREEN_WIDTH;
+    private double lastFPSTime = 0.0;
+    private double fps = 0.0;
+    private int frameCount = 0;
 
     public WindowManager() {
         keyBindings = new ArrayList<>();
     }
 
     public void createWindow(int width, int height) {
+        SCREEN_HEIGHT = height;
+        SCREEN_WIDTH = width;
         GLFWErrorCallback.createPrint(System.err).set();
 
         if (!glfwInit())
@@ -65,8 +71,7 @@ public class WindowManager {
             glfwSetWindowPos(
                     window,
                     (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2
-            );
+                    (vidmode.height() - pHeight.get(0)) / 2);
         }
 
         glfwMakeContextCurrent(window);
@@ -81,19 +86,39 @@ public class WindowManager {
     }
 
     public void render(Renderer<Renderable> renderer) {
-    GL.createCapabilities();
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-    while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // Render your game objects here
         renderer.render(); // Render the game objects using the provided renderer
+        renderFPS();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-}
+
+    private void renderFPS() {
+        // Get the current time
+        double currentTime = glfwGetTime();
+
+        // Calculate the time difference since the last frame
+        double frameTime = currentTime - lastFPSTime;
+
+        // Increment the frame counter
+        frameCount++;
+
+        // If one second has passed, update the FPS
+        if (frameTime >= 1.0) {
+            fps = frameCount / frameTime;
+            lastFPSTime = currentTime;
+            frameCount = 0;
+        }
+
+        // Render the FPS
+        glLoadIdentity();
+        glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1);
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glRasterPos2f(10, SCREEN_HEIGHT - 20);
+        glfwSetWindowTitle(window, "Enchanter - FPS: " + String.format("%.2f", fps));
+    }
 
     public void setKeyBindings(List<KeyBinding> keyBindings) {
         this.keyBindings = keyBindings;

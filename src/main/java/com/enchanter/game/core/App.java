@@ -3,9 +3,6 @@ import org.lwjgl.*;
 
 import com.enchanter.game.engine.Mejjiq;
 
-import static org.lwjgl.glfw.Callbacks.*;
-import static org.lwjgl.glfw.GLFW.*;
-
 
 public class App {
 	
@@ -16,15 +13,7 @@ public class App {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
 		mejjiq.init();
-		mejjiq.render();
-
-		// Free the window callbacks and destroy the window
-		glfwFreeCallbacks(mejjiq.getWindow());
-		glfwDestroyWindow(mejjiq.getWindow());
-
-		// Terminate GLFW and free the error callback
-		glfwTerminate();
-		glfwSetErrorCallback(null).free();
+		mejjiq.run();
 	}
 
 	public static void main(String[] args) {

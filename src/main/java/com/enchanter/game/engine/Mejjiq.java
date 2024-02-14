@@ -62,6 +62,12 @@ public class Mejjiq {
 
 	private static Mejjiq instance;
 
+	private static final double TARGET_UPS = 60.0; // Target updates per second
+	private static final double UPS_INTERVAL = 1.0 / TARGET_UPS;
+
+	private double elapsedTime = 0.0;
+	private double accumulator = 0.0;
+
 	private Mejjiq() {
 		try {
 			grid = new SceneGrid(SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, CELL_SIZE);
@@ -80,9 +86,8 @@ public class Mejjiq {
 	public void init() {
 		loadGameResources();
 
-	
 		sceneManager = new SceneManager();
-	
+
 		// Load scene from file using ResourceManager
 		try {
 			Scene startScene = ResourceManager.loadScene("src\\main\\resources\\scenes\\startScene.json");
@@ -90,13 +95,13 @@ public class Mejjiq {
 			eventManager = new EventManager();
 			eventManager.setScene(startScene);
 			eventManager.loadHardcodedBindings(collisionCallback, movementCallback);
-	
+
 			grid.setObstacles(startScene.getSceneStators());
-	
+
 			renderer.addRenderable((Renderable) startScene.getObjectById(0), 2);
 			renderer.addRenderable((Renderable) startScene.getStatorById(1), 1);
 			renderer.addRenderable((Renderable) startScene.getBackgroundById(2), 0);
-	
+
 			windowManager.createWindow(Consts.SCREEN_WIDTH, Consts.SCREEN_HEIGHT);
 			windowManager.setKeyBindings(eventManager.getBindings());
 		} catch (IOException e) {
@@ -108,8 +113,36 @@ public class Mejjiq {
 	 * Runs the game loop, which continuously renders game objects and handles user
 	 * input.
 	 */
+
+	public void run() {
+
+		double currentTime = glfwGetTime();
+		double lastTime = currentTime;
+		double frameTime;
+
+		while (!glfwWindowShouldClose(windowManager.getWindow())) {
+			currentTime = glfwGetTime();
+			frameTime = currentTime - lastTime;
+			lastTime = currentTime;
+
+			// Accumulate time and update at fixed intervals
+			accumulator += frameTime;
+			
+
+			while (accumulator >= UPS_INTERVAL) {
+				System.out.println(accumulator);
+				update(); // Update game logic
+				render(); // Render game objects
+				accumulator -= UPS_INTERVAL;
+			}			
+		}
+
+		// Terminate the game when the window is closed
+		terminate();
+	}
+
 	public void update() {
-		//windowManager.loop(renderer);
+		// windowManager.loop(renderer);
 	}
 
 	public void render() {
@@ -164,7 +197,7 @@ public class Mejjiq {
 		resourceManager.addResource("AudioFiles", 50);
 	}
 
-	public long getWindow(){
+	public long getWindow() {
 		return windowManager.getWindow();
 	}
 
